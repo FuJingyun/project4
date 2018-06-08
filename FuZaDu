@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include"Array.c"
+void selectsort(int a[], int length);
+void bubblesort(int a[], int length);
+void insertsort(int a[], int length);
+void main()
+{
+	int n;
+	int *array; 
+	int *a;
+	for(n=1; n<=32768; n=n*2)
+	{
+		printf("length of array: %d\n",n);
+		printf("\n\n");
+		a = genArr(n);//生成随机数组； 
+		selectsort(a, n);
+		a=readTXT(n);//将排好序的数组还原； 
+		bubblesort(a, n);
+		a=readTXT(n);
+		insertsort(a, n);
+		printf("\n\n\n");
+	}
+}
+void selectsort(int a[], int length)//利用选择排序法对数组进行排序，并记录时间频度与时间复杂度 
+{
+	int i, j;
+	int k;
+	int temp;
+	clock_t start,end; 
+	int count = 1;//时间频度 
+	printf("run selection sort\n");
+	start = clock();//开始计时 
+	for(i=0; i<length-1; i++)
+	{
+		k = i;
+		for(j=i+1; j<length; j++)
+		{
+			if(a[j]<a[k])
+			{
+				k = j;
+				count++;
+			}
+			count++;
+		}
+		if(i!=k)
+		{
+			temp = a[i];
+			a[i] = a[k];
+			a[k] = temp;
+			count+=3;
+		}
+		count+=2; 
+	}
+	end = clock();//结束计时 
+	printf("frequency count: %d\n", count);
+	printf("time complexity: %.4f seconds\n", (double)(end-start)/CLK_TCK);//将程序运行时间转换成秒并以双精度浮点数形式输出 
+	printf("\n");
+}
+
+void bubblesort(int a[], int length)//利用冒泡排序法对数组进行排序，并记录时间频度与时间复杂度
+{
+	int i, j;
+	int temp;
+	clock_t start,end; 
+	int count = 1;//时间频度 
+	printf("run bubble sort\n");
+	start = clock();//计时开始 
+	for(i=0; i<length-1; i++)
+	{
+		for(j=0; j<length-1; j++)
+		{
+			if(a[j]>a[j+1])
+			{
+				temp = a[j];
+				a[j] = a[j+1];
+				a[j+1] = temp;
+				count+=3;
+			}
+		}
+		count++;
+	}
+	end = clock();//计时结束 
+	printf("frequency count: %d\n", count);
+	printf("time complexity: %.4f seconds\n", (double)(end-start)/CLK_TCK);//将程序运行时间转换成秒并以双精度浮点数形式输出 
+	printf("\n");
+ } 
+void insertsort(int a[], int length)   //利用插入排序法对数组进行排序，并记录时间频度与时间复杂度
+  {  
+    int i, j;  
+    int temp;  
+    clock_t start,end; 
+	int count = 1;//时间频度 
+	printf("run insertion sort\n");
+	start = clock();//计时开始 
+    for(i=1; i<length; i++)  
+    {  
+      temp = a[i];
+      j = i-1; 
+      while(j>=0 && temp<a[j])  
+      {  
+        a[j+1] = a[j];
+        j--; 
+		count+=2; 
+      }  
+      a[j+1] = temp;//找到合适位置，将元素插入。
+	  count+=3;   
+    }  
+    end = clock();//计时结束 
+	printf("frequency count: %d\n", count);
+	printf("time complexity: %.4f seconds\n", (double)(end-start)/CLK_TCK);//将程序运行时间转换成秒并以双精度浮点数形式输出 
+	printf("\n");
+}
